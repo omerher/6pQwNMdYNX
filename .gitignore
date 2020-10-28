@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Personal files to exclude
+Code/*
+!Code/*.py
+!Code/requirements.txt
