@@ -72,27 +72,69 @@ class Caption:
             return hashtag_str[1:]
 
     def create_caption(self):
-        desc = self.get_description()
-        credit = self.get_credits()
-        hashtags = self.get_hashtags()
+        variables = {
+        "description": self.get_description(),
+        "credit": self.get_credits(),
+        "hashtags": self.get_hashtags(),
+        "self_username": self.username
+        }
         
-        caption = f"""
-{desc}
-FOLLOW 👉👉 @{self.username} 👈👈 FOR MORE
-__
-📸: {credit}
-__
-This photo is for entertainment purposes only, if the owner would like the photo taken down or if credit was not given please DM @{self.username} and l will sort it out ASAP!
-__
-{hashtags}
-        """
-
-        return caption.strip()
+        with open(f"{self.username}/caption.txt", "r", encoding="utf-8") as f:
+            return f.read().format(**variables)
 
 def get_caption(og_caption, username, og_poster):
     cap = Caption(og_caption, username, og_poster)
 
     return cap.create_caption()
+
+def caption_setup(username):
+    sg.theme('Dark')
+
+    layout = [
+        [sg.Text("Enter the format for your caption (emojis do not actually look like this):")],
+        [sg.Text("{description} = random line from the descriptions you configured.\n{credit} = username of the account the post is taken from (if none is found, it will be 'unknown'.\n{hashtags} = generated hashtags from those you configured.\n{self_username} = your IG account username.\n", text_color="#f03434")],
+        [sg.Multiline(default_text="""{description}
+FOLLOW 👉👉 @{self_username} 👈👈 FOR MORE
+__
+📸: {credit}
+__
+This photo is for entertainment purposes only, if the owner would like the photo taken down or if credit was not given please DM @{self_username} and l will sort it out ASAP!
+__
+{hashtags}""", size=(100,20), key="-CAPTION-")],
+        [sg.Button("Save")]]
+
+    window = sg.Window('Window Title', layout)
+    # Event Loop to process "events" and get the "values" of the inputs
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+            break
+        if event == "Save":
+            with open (f"{username}/caption.txt", "w", encoding="utf-8") as f:
+                while True:
+                    if check_legal_caption(values["-CAPTION-"]):
+                        f.write(values["-CAPTION-"])
+                    else:
+                        sg.popup("Not valid!")
+                        window.close()
+        
+
+    window.close()
+
+def check_legal_caption(string):
+    try:
+        variables = {
+        "description": 1,
+        "credit": 2,
+        "hashtags": 3,
+        "self_username": 4
+        }
+
+        string.format(**variables)
+
+        return true
+    except KeyError:
+        return false
 
 if __name__ == "__main__":
     pass

@@ -4,6 +4,7 @@ import os
 
 from start import start
 from setup import setup
+from caption import caption_setup
 import utils, overnight
 
 WINDOW_TITLE = 'IG Upload Helper'
@@ -37,7 +38,7 @@ layout = [
             [sg.Text("")],
             [sg.Text("First Time (for each account)", font=("Arield 12 bold"))],
             [sg.Button("Setup", size=(8,2)), ],
-            [sg.Text("Select account:", visible=accounts_visible), sg.DropDown(accounts, key='-ACCOUNT-', default_value=default_account, visible=accounts_visible), barrier_visible, sg.Text("Setup files:"), sg.Button("Descriptions"), sg.Button("Hashtags")],
+            [sg.Text("Select account:", visible=accounts_visible), sg.DropDown(accounts, key='-ACCOUNT-', default_value=default_account, visible=accounts_visible), barrier_visible, sg.Text("Setup files:"), sg.Button("Descriptions"), sg.Button("Hashtags"), sg.Button("Caption")],
             [sg.Text("")],
             [sg.Text("Run Bot", font=("Ariel 12 bold"))],
             [sg.Button("Start", size=(8,2))],
@@ -88,6 +89,18 @@ while True:
         
         hashtags_path = os.path.join(base_path, f"{username}/hashtags.json")
         utils.setup_hashtags(hashtags_path)
+    
+    if event == "Caption":
+        accounts = [account for account in open("accounts.txt", "r").read().split("\n") if account]
+        if len(accounts) < 1:
+            sg.Popup("No accounts added")
+            break
+        if len(accounts) == 1:
+            username = accounts[0]
+        else:
+            username = values["-ACCOUNT-"]
+
+        caption_setup(username)
     
     if event == "Scrape":
         utils.overnight_scrape(values["-ACCOUNTS-"], values["-OVERNIGHT_ACCOUNT-"])

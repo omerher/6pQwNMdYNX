@@ -29,6 +29,17 @@ def setup_folder(username):
     description_path = os.path.join(base_path, "descriptions.txt")
     create_file(description_path, "Enter each description/caption on a new line.")
 
+    # creates caption.txt if it doesn't exist
+    caption_path = os.path.join(base_path, "caption.txt")
+    create_file(caption_path, """{description}
+FOLLOW 👉👉 @{self_username} 👈👈 FOR MORE
+__
+📸: {credit}
+__
+This photo is for entertainment purposes only, if the owner would like the photo taken down or if credit was not given please DM @{self_username} and l will sort it out ASAP!
+__
+{hashtags}""")
+
 
 def overnight_scrape(accounts, user_account):
     while not accounts:

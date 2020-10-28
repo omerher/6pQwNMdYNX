@@ -29,7 +29,7 @@ def scrape_func(accounts, user_account):
 def overnight():
     sg.theme('Dark')   # Add a touch of color
     # All the stuff inside your window.
-    accounts = [folder for folder in [os.path.join('.', o)[2:] for o in os.listdir('.') if os.path.isdir(os.path.join('.',o))] if folder not in ['.git', 'venv', '__pycache__', '.vscode', 'utils']]
+    accounts = [account for account in open("accounts.txt", "r").read().split("\n") if account]  # gets all accounts
     if len(accounts) == 0:
         sg.popup_error('No accounts found. Try running setup.py and then start.py again.')
         quit()
@@ -58,3 +58,7 @@ def overnight():
             break
     
     window.close()
+
+if __name__ == "__main__":
+    overnight()
+    
