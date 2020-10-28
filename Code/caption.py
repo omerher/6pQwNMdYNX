@@ -111,12 +111,13 @@ __
             break
         if event == "Save":
             with open (f"{username}/caption.txt", "w", encoding="utf-8") as f:
-                while True:
-                    if check_legal_caption(values["-CAPTION-"]):
-                        f.write(values["-CAPTION-"])
-                    else:
-                        sg.popup("Not valid!")
-                        window.close()
+                if check_legal_caption(values["-CAPTION-"]):
+                    f.write(values["-CAPTION-"])
+                    sg.popup("Saved caption!")
+                else:
+                    sg.popup("Not valid!")
+                
+                window.close()
         
 
     window.close()
@@ -132,9 +133,9 @@ def check_legal_caption(string):
 
         string.format(**variables)
 
-        return true
+        return True
     except KeyError:
-        return false
+        return False
 
 if __name__ == "__main__":
     pass

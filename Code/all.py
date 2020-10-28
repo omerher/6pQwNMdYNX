@@ -1,15 +1,17 @@
 import PySimpleGUI as sg
 import threading
 import os
+import re
 
 from start import start
 from setup import setup
 from caption import caption_setup
+from main import main
 import utils, overnight
 
 WINDOW_TITLE = 'IG Upload Helper'
-x = 600
-y = 500
+x = 650
+y = 650
 
 sg.theme('Dark')   # Add a touch of color
 # All the stuff inside your window.
@@ -34,15 +36,21 @@ if len(accounts) > 1:
 else:
     default_account = "No Accounts Found"
 layout = [ 
-            [sg.Text("IG Upload Helper", font=("Ariel 14"), justification='center', size=(x,1))],
+            [sg.Text("IG Upload Helper", font=("Ariel 16 bold"), justification='center', size=(x,1))],
             [sg.Text("")],
-            [sg.Text("First Time (for each account)", font=("Arield 12 bold"))],
+            [sg.Text("First Time (for each account)", font=("Ariel 14 bold"))],
             [sg.Button("Setup", size=(8,2)), ],
-            [sg.Text("Select account:", visible=accounts_visible), sg.DropDown(accounts, key='-ACCOUNT-', default_value=default_account, visible=accounts_visible), barrier_visible, sg.Text("Setup files:"), sg.Button("Descriptions"), sg.Button("Hashtags"), sg.Button("Caption")],
+            [sg.Text("Select account:", visible=accounts_visible), sg.DropDown(accounts, key='-SELECT_ACCOUNT-', default_value=default_account, visible=accounts_visible), barrier_visible, sg.Text("Setup files:"), sg.Button("Descriptions"), sg.Button("Hashtags"), sg.Button("Caption")],
             [sg.Text("")],
-            [sg.Text("Run Bot", font=("Ariel 12 bold"))],
-            [sg.Button("Start", size=(8,2))],
-            [sg.Text("")],
+            [sg.Text("Run Bot", font=("Ariel 14 bold"))],
+            [sg.Text("Scrape and upload", font="Ariel 11 bold")],
+            [sg.Text('Enter the username of the account you want to scrape:'), sg.InputText(key='-SCRAPE_USERNAME-', size=(41,0))],
+            [sg.Text("Enter the timestamp of your last post (if nothing is entered, it will be taken from the 'last_timestamp.txt' file):")],
+            [sg.InputText(key = '-TIMESTAMP-', size=(11,0)), sg.Button('epochconverter.com')],
+            [sg.Text("Enter how many posts you want to posts from the user:"), sg.InputText(key='-NUM_POSTS-', default_text='25', size=(6,0))],
+            [sg.Text("Select your account:"), sg.DropDown(accounts, key='-ACCOUNT-', default_value=accounts[0]), sg.Button('Start'), sg.Button('Cancel')],
+            [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
+            [sg.Text("Scrape without uploading", font="Ariel 11 bold")],
             [sg.Text("Scrape multiple accounts to use for later:")],
             [sg.Text("Enter the accounts separated by a comma (e.g., 'instagram,cristiano,jlo')")],
             [sg.InputText(key='-ACCOUNTS-', size=(25,0))],
@@ -58,8 +66,42 @@ window = sg.Window(WINDOW_TITLE, layout, size=(x, y))
 while True:
     event, values = window.read()
 
-    if event == "Start":
-        start()
+    # "Start" portion of Run
+    if event == 'epochconverter.com':
+            os.startfile('https://www.epochconverter.com/')
+
+    if event == 'Start':
+        account = values['-ACCOUNT-']
+        
+        scrape_username = values["-SCRAPE_USERNAME-"]
+        while not scrape_username:
+            if scrape_username is None:
+                quit()
+            scrape_username = sg.popup_get_text("Username cannot be blank.")
+
+        # checks
+        with open(os.path.join(account, "scraped_accounts.txt"), "a+") as f:
+            f.seek(0)
+            scraped_accounts = f.read().split("\n")
+
+            if scrape_username in scraped_accounts:
+                is_continue = sg.popup_yes_no("Warning", "You have already scraped posts from that user. Are you sure you want to scrape them again?")
+                while not is_continue:
+                    if is_continue is None:
+                        quit()
+                    is_continue = sg.popup_yes_no("Warning", "You have already scraped posts from that user. Are you sure you want to scrape them again?")
+
+        input_timestamp = values["-TIMESTAMP-"]
+        
+        num_posts = values["-NUM_POSTS-"]
+        regex = r"\b([1-9]|[1-8][0-9]|9[0-9]|100)\b"
+        while not re.search(regex, num_posts):
+            if num_posts is None:
+                quit()
+            num_posts = sg.popup_get_text("Input must be a number between 1-100.")
+        num_posts = int(num_posts)
+
+        main(scrape_username, input_timestamp, num_posts, account)
     
     if event == "Setup":
         username = setup()
@@ -72,7 +114,7 @@ while True:
         if len(accounts) == 1:
             username = accounts[0]
         else:
-            username = values["-ACCOUNT-"]
+            username = values["-SELECT_ACCOUNT-"]
             
         description_path = os.path.join(base_path, f"{username}/descriptions.txt")
         os.startfile(description_path)
@@ -85,7 +127,7 @@ while True:
         if len(accounts) == 1:
             username = accounts[0]
         else:
-            username = values["-ACCOUNT-"]
+            username = values["-SELECT_ACCOUNT-"]
         
         hashtags_path = os.path.join(base_path, f"{username}/hashtags.json")
         utils.setup_hashtags(hashtags_path)
@@ -98,7 +140,7 @@ while True:
         if len(accounts) == 1:
             username = accounts[0]
         else:
-            username = values["-ACCOUNT-"]
+            username = values["-SELECT_ACCOUNT-"]
 
         caption_setup(username)
     
