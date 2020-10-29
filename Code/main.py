@@ -151,9 +151,9 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     try:
         starting_time = post_hours.index(dt.hour) + 1
     except ValueError:
-        if dt_format.startswith("%m"):
+        if dt_format == "%m/%d/%Y":
             formatted_time = f"{dt.month}/{dt.day}/{dt.year}"
-        elif dt_format.startswith("%d"):
+        elif dt_format == "%d/%m/%Y":
             formatted_time = f"{dt.day}/{dt.month}/{dt.year}"
         timestamp = int(time.mktime(datetime.strptime(formatted_time, dt_format).timetuple()))  # converts the string in the previous line to a timestamp
         starting_time = 0
