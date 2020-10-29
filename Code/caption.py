@@ -90,17 +90,23 @@ def get_caption(og_caption, username, og_poster):
 def caption_setup(username):
     sg.theme('Dark')
 
-    layout = [
-        [sg.Text("Enter the format for your caption (emojis do not actually look like this):")],
-        [sg.Text("{description} = random line from the descriptions you configured.\n{credit} = username of the account the post is taken from (if none is found, it will be 'unknown'.\n{hashtags} = generated hashtags from those you configured.\n{self_username} = your IG account username.\n", text_color="#f03434")],
-        [sg.Multiline(default_text="""{description}
+    if os.path.exists(os.path.join(username, "caption.txt")):
+        with open(os.path.join(username, "caption.txt"), "r") as f:
+            default_text = f.read()
+    else:
+        default_text = """{description}
 FOLLOW 👉👉 @{self_username} 👈👈 FOR MORE
 __
 📸: {credit}
 __
 This photo is for entertainment purposes only, if the owner would like the photo taken down or if credit was not given please DM @{self_username} and l will sort it out ASAP!
 __
-{hashtags}""", size=(100,20), key="-CAPTION-")],
+{hashtags}"""
+
+    layout = [
+        [sg.Text("Enter the format for your caption (emojis do not actually look like this):")],
+        [sg.Text("{description} = random line from the descriptions you configured.\n{credit} = username of the account the post is taken from (if none is found, it will be 'unknown'.\n{hashtags} = generated hashtags from those you configured.\n{self_username} = your IG account username.\n", text_color="#f03434")],
+        [sg.Multiline(default_text=default_text=, size=(100,20), key="-CAPTION-")],
         [sg.Button("Save")]]
 
     window = sg.Window('Window Title', layout)
