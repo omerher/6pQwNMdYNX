@@ -106,7 +106,7 @@ __
     layout = [
         [sg.Text("Enter the format for your caption (emojis do not actually look like this):")],
         [sg.Text("{description} = random line from the descriptions you configured.\n{credit} = username of the account the post is taken from (if none is found, it will be 'unknown'.\n{hashtags} = generated hashtags from those you configured.\n{self_username} = your IG account username.\n", text_color="#f03434")],
-        [sg.Multiline(default_text=default_text=, size=(100,20), key="-CAPTION-")],
+        [sg.Multiline(default_text=default_text, size=(100,20), key="-CAPTION-")],
         [sg.Button("Save")]]
 
     window = sg.Window('Window Title', layout)
