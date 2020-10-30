@@ -58,7 +58,7 @@ def overnight_scrape(accounts, user_account):
         with open(os.path.join(f"{user_account}/pickle_data",  f"{account}.pkl"), "wb") as f:
             pickle.dump(account_data, f)
         
-        time.sleep(3600)  # wait for an hour to reset and limiations
+        time.sleep(10)  # wait for a few seconds to reset and limiations
 
 def setup_hashtags(hashtags_path):
     WINDOW_TITLE = 'Setup Hashtags'
