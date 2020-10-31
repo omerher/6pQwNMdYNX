@@ -132,4 +132,5 @@ dmypy.json
 Code/*
 !Code/*.py
 !Code/requirements.txt
+!Code/geckodriver.exe
 install.bat

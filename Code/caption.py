@@ -6,10 +6,11 @@ import requests
 import PySimpleGUI as sg
 
 class Caption:
-    def __init__(self, og_caption, username, og_poster):
+    def __init__(self, og_caption, username, og_poster, caption_format):
         self.caption = og_caption
         self.username = username
         self.poster = og_poster
+        self.caption_format = caption_format
     
     def get_description(self):
         with open(f"{self.username}/descriptions.txt", "r", encoding="utf-8") as f:
@@ -79,11 +80,10 @@ class Caption:
         "self_username": self.username
         }
         
-        with open(f"{self.username}/caption.txt", "r", encoding="utf-8") as f:
-            return f.read().format(**variables)
+        return self.caption_format.format(**variables)
 
-def get_caption(og_caption, username, og_poster):
-    cap = Caption(og_caption, username, og_poster)
+def get_caption(og_caption, username, og_poster, caption_format):
+    cap = Caption(og_caption, username, og_poster, caption_format)
 
     return cap.create_caption()
 

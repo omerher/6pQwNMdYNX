@@ -108,6 +108,8 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
 
     data = reduce_posts(_data, num_posts)
 
+    with open(f"{user_account}/caption.txt", "r", encoding="utf-8") as f:
+        caption_format = f.read()
 
     parent_path = os.path.abspath(f"{user_account}/media")
     for x, post in enumerate(data):
@@ -122,7 +124,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
                 file_names += f'"{x} {y}{media["suffix"]}" '
         
         # create a caption using a method which gets: the original caption, the username of the account posting, and the origin poster
-        post_caption = caption.get_caption(post["caption"], user_account, post["op"])  # pass in values short description, your username, and credit respectively, and returns a generated caption
+        post_caption = caption.get_caption(post["caption"], user_account, post["op"], caption_format)  # pass in values short description, your username, and credit respectively, and returns a generated caption
         uploader.uploader(post_caption, file_names, bb_enabled, parent_path, user_account, multiple_accounts, fb_name)
 
     time.sleep(0.5)
