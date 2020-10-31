@@ -139,13 +139,10 @@ def scheduler(timestamp, bb_enabled, dt_format, format_24h):
     keyboard.press_and_release("tab")
 
     time.sleep(0.3)
-    str_hour = str(hour)
-    if len(str_hour) == 1:
-        keyboard.write(str_hour)
-    else:
-        keyboard.write(str_hour[0])
+    str_hour = "00" + str(hour)
+    for c in str_hour:
+        keyboard.write(c)
         time.sleep(0.2)
-        keyboard.write(str_hour[1])
     time.sleep(0.2)
     keyboard.press_and_release("tab")
 

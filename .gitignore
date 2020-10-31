@@ -133,3 +133,5 @@ Code/*
 !Code/*.py
 !Code/requirements.txt
 install.bat
+!geckodriver.exe
+geckodriver.log
