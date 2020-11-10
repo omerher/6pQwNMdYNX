@@ -90,6 +90,7 @@ while True:
                     if is_continue is None:
                         quit()
                     is_continue = sg.popup_yes_no("Warning", "You have already scraped posts from that user. Are you sure you want to scrape them again?")
+        scrape_username = scrape_username.strip()
 
         input_timestamp = values["-TIMESTAMP-"]
         

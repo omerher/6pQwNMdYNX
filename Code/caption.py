@@ -91,7 +91,7 @@ def caption_setup(username):
     sg.theme('Dark')
 
     if os.path.exists(os.path.join(username, "caption.txt")):
-        with open(os.path.join(username, "caption.txt"), "r") as f:
+        with open(os.path.join(username, "caption.txt"), "r", encoding="utf-8") as f:
             default_text = f.read()
     else:
         default_text = """{description}
