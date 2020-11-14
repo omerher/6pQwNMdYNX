@@ -96,9 +96,9 @@ def scheduler(timestamp, bb_enabled, dt_format, format_24h):
     else:
         bb_difference = 35
 
-    schedule_caret = (1860, 1000-bb_difference)
-    schedule_btn = (1591, 904-bb_difference)
-    date_cords = (1615, 875-bb_difference)
+    schedule_caret = (1860, 990-bb_difference)
+    schedule_btn = (1591, 890-bb_difference)
+    date_cords = (1615, 858-bb_difference)
 
     dt = datetime.fromtimestamp(timestamp)
 
