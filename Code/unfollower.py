@@ -110,8 +110,8 @@ class Unfollower:
             else:
                 time.sleep(random.randint(5, 10))
 
-def unfollow():
-    unfollower = Unfollower("USERNAME", "PASSWORD")
+def unfollow(u, p):
+    unfollower = Unfollower(u, p)
     
     unfollower.login()
     time.sleep(3)

@@ -152,7 +152,10 @@ while True:
         utils.overnight_scrape(values["-ACCOUNTS-"], values["-OVERNIGHT_ACCOUNT-"])
 
     if event == "Unfollow":
-        unfollow()
+        _u = sg.popup_get_text("Enter your username:")
+        _p = sg.popup_get_text("Enter your password:")
+        
+        unfollow(_u, _p)
 
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
             break
