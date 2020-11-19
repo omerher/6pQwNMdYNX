@@ -110,10 +110,13 @@ class Unfollower:
             else:
                 time.sleep(random.randint(5, 10))
 
-if __name__ == "__main__":
+def unfollow():
     unfollower = Unfollower("USERNAME", "PASSWORD")
     
     unfollower.login()
     time.sleep(3)
     unfollower.find_followings()
     unfollower.unfollow_users()
+
+if __name__ == "__main__":
+    unfollow()

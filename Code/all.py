@@ -8,10 +8,11 @@ from setup import setup
 from caption import caption_setup
 from main import main
 import utils, overnight
+from unfollower import unfollow
 
 WINDOW_TITLE = 'IG Upload Helper'
 x = 650
-y = 650
+y = 750
 
 sg.theme('Dark')   # Add a touch of color
 # All the stuff inside your window.
@@ -48,13 +49,15 @@ layout = [
             [sg.Text("Enter the timestamp of your last post (if nothing is entered, it will be taken from the 'last_timestamp.txt' file):")],
             [sg.InputText(key = '-TIMESTAMP-', size=(11,0)), sg.Button('epochconverter.com')],
             [sg.Text("Enter how many posts you want to posts from the user:"), sg.InputText(key='-NUM_POSTS-', default_text='25', size=(6,0))],
-            [sg.Text("Select your account:"), sg.DropDown(accounts, key='-ACCOUNT-', default_value=accounts[0]), sg.Button('Start'), sg.Button('Cancel')],
+            [sg.Text("Select your account:"), sg.DropDown(accounts, key='-ACCOUNT-', default_value=accounts[0]), sg.Button('Start')],
             [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
             [sg.Text("Scrape without uploading", font="Ariel 11 bold")],
             [sg.Text("Scrape multiple accounts to use for later:")],
             [sg.Text("Enter the accounts separated by a comma (e.g., 'instagram,cristiano,jlo')")],
             [sg.InputText(key='-ACCOUNTS-', size=(25,0))],
             [sg.Text("Select your account:"), sg.DropDown(accounts, key='-OVERNIGHT_ACCOUNT-', default_value=default_account, visible=accounts_visible), sg.Button('Scrape')],
+            [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
+            [sg.Button("Unfollow", size=(8,2))],
             [sg.Text("")],
             [sg.Button('Cancel', size=(8,2))]
             ]
@@ -147,6 +150,9 @@ while True:
     
     if event == "Scrape":
         utils.overnight_scrape(values["-ACCOUNTS-"], values["-OVERNIGHT_ACCOUNT-"])
+
+    if event == "Unfollow":
+        unfollow()
 
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
             break
