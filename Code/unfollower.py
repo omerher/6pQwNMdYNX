@@ -86,16 +86,18 @@ class Unfollower:
         following_window = self.driver.find_element_by_xpath("/html/body/div[5]/div/div/div[2]")
         following_number = self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[3]/a/span").text
         counter = 0
-        while counter < int(following_number) / 5:  # scrolls 5 account each time approximately, if in your browser it differs, change the value with the passed account per scrolling
+        while counter < int(following_number.replace(",", "")) / 5:  # scrolls 5 account each time approximately, if in your browser it differs, change the value with the passed account per scrolling
             self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', following_window)
             counter += 1
             time.sleep(0.2)
+            if counter == 20:
+                break
         self.following_accounts = self.driver.find_elements_by_class_name("_0imsa")
         self.following_accounts = [account.get_attribute('title') for account in self.following_accounts]  # the array of the accounts who we follow
 
     def unfollow_users(self):
         following_number = self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[3]/a/span").text
-        for i in range(1, int(following_number) + 1):
+        for i in range(1, int(following_number.replace(",", "")) + 1):
             self.driver.find_element_by_xpath(f"/html/body/div[5]/div/div/div[2]/ul/div/li[{i}]/div/div[2]/button").click()
             time.sleep(1)
             self.driver.find_element_by_xpath("/html/body/div[6]/div/div/div/div[3]/button[1]").click()

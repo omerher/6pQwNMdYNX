@@ -82,30 +82,32 @@ while True:
                 quit()
             scrape_username = sg.popup_get_text("Username cannot be blank.")
 
-        # checks
+        # checks if the account has already been scraped
         with open(os.path.join(account, "scraped_accounts.txt"), "a+") as f:
             f.seek(0)
             scraped_accounts = f.read().split("\n")
 
+            is_continue = "Yes"
             if scrape_username in scraped_accounts:
                 is_continue = sg.popup_yes_no("Warning", "You have already scraped posts from that user. Are you sure you want to scrape them again?")
                 while not is_continue:
                     if is_continue is None:
                         quit()
                     is_continue = sg.popup_yes_no("Warning", "You have already scraped posts from that user. Are you sure you want to scrape them again?")
-        scrape_username = scrape_username.strip()
+        if is_continue == "Yes":
+            scrape_username = scrape_username.strip()
 
-        input_timestamp = values["-TIMESTAMP-"]
-        
-        num_posts = values["-NUM_POSTS-"]
-        regex = r"\b([1-9]|[1-8][0-9]|9[0-9]|100)\b"
-        while not re.search(regex, num_posts):
-            if num_posts is None:
-                quit()
-            num_posts = sg.popup_get_text("Input must be a number between 1-100.")
-        num_posts = int(num_posts)
+            input_timestamp = values["-TIMESTAMP-"]
+            
+            num_posts = values["-NUM_POSTS-"]
+            regex = r"\b([1-9]|[1-8][0-9]|9[0-9]|100)\b"
+            while not re.search(regex, num_posts):
+                if num_posts is None:
+                    quit()
+                num_posts = sg.popup_get_text("Input must be a number between 1-100.")
+            num_posts = int(num_posts)
 
-        main(scrape_username, input_timestamp, num_posts, account)
+            main(scrape_username, input_timestamp, num_posts, account)
     
     if event == "Setup":
         username = setup()

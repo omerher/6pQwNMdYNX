@@ -20,35 +20,20 @@ def get_media_type(string):
     elif string == "GraphSidecar":
         return "Carousel"
 
-def get_post_info(link):
-    try:
-        url = f"{link}?__a=1"
-        json_data = requests.get(url).json()
-    except:
-        r = requests.get(link).text
-        # find json in the html with regex, get first item from list then from tuple, and remove last semicolon
-        x = re.findall('<script type="text\/javascript">' + '([^{]+?({.*graphql.*})[^}]+?)' + '<\/script>', r)[0][0][:-1]
-        x = x.split('{"PostPage":[')[1].split(']},"hostname"')[0]  # cut JS text at the beginning and at the end
-        json_data = json.loads(x)
-
-    return json_data
-
-def get_post_media(link):
-    info = get_post_info(link)
-
+def get_post_media(info):
     response = []
     
     # handle different paths for different media type
-    if info["graphql"]["shortcode_media"]["__typename"] == "GraphImage":
-        media = info["graphql"]["shortcode_media"]["display_url"]
+    if info["__typename"] == "GraphImage":
+        media = info["display_url"]
         suffix = ".jpg"
         response.append({'media': media, 'suffix': suffix})
-    elif info["graphql"]["shortcode_media"]["__typename"] == "GraphVideo":
-        media = info["graphql"]["shortcode_media"]["video_url"]
+    elif info["__typename"] == "GraphVideo":
+        media = info["video_url"]
         suffix = ".mp4"
         response.append({'media': media, 'suffix': suffix})
-    elif info["graphql"]["shortcode_media"]["__typename"] == "GraphSidecar":
-        for content in info["graphql"]["shortcode_media"]["edge_sidecar_to_children"]["edges"]:
+    elif info["__typename"] == "GraphSidecar":
+        for content in info["edge_sidecar_to_children"]["edges"]:
             if content["node"]["__typename"] == "GraphImage":
                 media = content["node"]["display_url"]
                 suffix = ".jpg"
@@ -67,7 +52,7 @@ class InstagramScaper:
         self.account = ""
 
     def get_user_info(self, id, max_id):
-        scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=472f257a40c653c64c666ce877d59d2b&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
+        scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=003056d32c2554def87228bc3fd9668a&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
         r = requests.get(scrape_url)
 
         return json.loads(r.text)
@@ -96,7 +81,7 @@ class InstagramScaper:
                 
                 media_type = get_media_type(post["__typename"])
                 
-                media = get_post_media(link)
+                media = get_post_media(post)
                 
                 try:
                     caption = post["edge_media_to_caption"]["edges"][0]["node"]["text"]
@@ -134,3 +119,6 @@ def scrape(acc, num_posts):
     scraper = InstagramScaper()
     scraper.get_user_posts(acc, num_posts)
     return scraper.data
+
+if __name__ == "__main__":
+    pass
