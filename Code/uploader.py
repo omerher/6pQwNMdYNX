@@ -37,52 +37,52 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     os.startfile(url)
     
     # click Create Post
-    time.sleep(5)
+    time.sleep(4)
     click(create_post_btn)
 
     # click Instagram Feed
-    time.sleep(1)
+    time.sleep(0.25)
     click(instagram_feed_btn)
 
+    time.sleep(0.75)
     if multiple_accounts:
-        time.sleep(1.5)
         click(search_profile)
 
-        time.sleep(1.5)
+        time.sleep(0.25)
         keyboard.write(fb_name)
 
-        time.sleep(1)
+        time.sleep(0.75)
         click(first_profile)
 
     # enter caption
-    time.sleep(1.5)
+    time.sleep(0.25)
     click(caption_location)
-    time.sleep(0.5)
+    time.sleep(0.3)
     subprocess.run(['clip.exe'], input=caption.encode('utf-16'), check=True) 
     keyboard.press_and_release('ctrl+v')
     
     # click Add Content
-    time.sleep(1)
+    time.sleep(0.3)
     click(add_content)
 
     # click From File Upload
-    time.sleep(1)
+    time.sleep(0.3)
     click(file_upload)
 
     # click the file explorer address bar and enter path to media
     time.sleep(1)
     click(address_bar)
-    time.sleep(0.4)
+    time.sleep(0.3)
     keyboard.write(path)
-    time.sleep(0.4)
+    time.sleep(0.3)
     keyboard.press_and_release("enter")
 
     # select all photos and press enter
-    time.sleep(1)
+    time.sleep(0.3)
     click(file_names_cords)
-    time.sleep(0.5)
+    time.sleep(0.3)
     keyboard.write(file_names)
-    time.sleep(1)
+    time.sleep(0.3)
     keyboard.press_and_release("enter")
 
     # wait a second before repeating
