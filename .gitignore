@@ -134,4 +134,4 @@ Code/*
 !Code/requirements.txt
 !Code/geckodriver.exe
 install.bat
-run.bat
+.RUN.bat
