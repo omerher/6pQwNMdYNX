@@ -48,7 +48,7 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     if multiple_accounts:
         click(search_profile)
 
-        time.sleep(0.25)
+        time.sleep(0.6)
         keyboard.write(fb_name)
 
         time.sleep(0.75)

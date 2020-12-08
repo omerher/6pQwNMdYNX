@@ -12,7 +12,7 @@ def create_folder(path):
 
 def create_file(path, file_text):
     if not os.path.exists(path):
-        with open(path, "w") as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(file_text)
 
 def setup_folder(username):
