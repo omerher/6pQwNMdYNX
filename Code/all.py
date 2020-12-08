@@ -44,7 +44,7 @@ layout = [
             [sg.Text("First Time (for each account)", font=("Ariel 14 bold"))],
             [sg.Button("Setup", size=(8,2)), ],
             [sg.Text("Select account:", visible=accounts_visible), sg.DropDown(accounts, key='-SELECT_ACCOUNT-', default_value=default_account, visible=accounts_visible), barrier_visible, sg.Text("Setup files:"), sg.Button("Descriptions"), sg.Button("Hashtags"), sg.Button("Caption")],
-            [sg.Text("")],
+            [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
             [sg.Text("Run Bot", font=("Ariel 14 bold"))],
             [sg.Text("Scrape and upload", font="Ariel 11 bold")],
             [sg.Text('Enter the username of the account you want to scrape:'), sg.InputText(key='-SCRAPE_USERNAME-', size=(41,0))],
@@ -58,8 +58,6 @@ layout = [
             [sg.Text("Enter the accounts separated by a comma (e.g., 'instagram,cristiano,jlo')")],
             [sg.InputText(key='-ACCOUNTS-', size=(25,0))],
             [sg.Text("Select your account:"), sg.DropDown(accounts, key='-OVERNIGHT_ACCOUNT-', default_value=default_account, visible=accounts_visible), sg.Button('Scrape')],
-            [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
-            [sg.Button("Unfollow", size=(8,2))],
             [sg.Text("")],
             [sg.Button('Cancel', size=(8,2))]
             ]

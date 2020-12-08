@@ -25,7 +25,7 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     view_btn = (811, 730-bb_difference)
     create_post_btn = (111, 182-bb_difference)
     instagram_feed_btn = (121, 227-bb_difference)
-    caption_location = (1245, 334-bb_difference)
+    caption_location = (1200, 334-bb_difference)
     add_content = (1256, 740-bb_difference)
     file_upload = (1270, 786-bb_difference)
     address_bar = (748, 47)
