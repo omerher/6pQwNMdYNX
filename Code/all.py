@@ -32,10 +32,12 @@ if len(accounts) > 1:
 barrier = sg.Text("|", font=("Ariel 15"))
 barrier_visible = sg.Text("|", font=("Ariel 15"), visible=accounts_visible)
 
-if len(accounts) > 1:
+if len(accounts) >= 1:
     default_account = accounts[0]
 else:
-    default_account = "No Accounts Found"
+    sg.popup("No accounts found!")
+    exit()
+
 layout = [ 
             [sg.Text("IG Upload Helper", font=("Ariel 16 bold"), justification='center', size=(x,1))],
             [sg.Text("")],
