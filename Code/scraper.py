@@ -5,7 +5,7 @@ import re
 import PySimpleGUI as sg
 
 def get_id(username):
-    url = "https://www.instagram.com/web/search/topsearch/?context=blended&query=" + username + "&rank_token=0.3953592318270893&count=1"
+    url = "https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
     response = requests.get(url)
     respJSON = response.json()
 
@@ -53,12 +53,13 @@ class InstagramScaper:
 
     def get_user_info(self, id, max_id):
         scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=003056d32c2554def87228bc3fd9668a&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
+        print(scrape_url)
         r = requests.get(scrape_url)
 
-        return json.loads(r.text)
+        return r.json()
 
-    def get_user_posts(self, account, num_posts):
-        self.account = account
+    def get_user_posts(self, account_id, num_posts):
+        self.account = self.get_user_info(account_id, "")["data"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_tagged_user"]["edges"][0]["node"]["user"]["username"]
         account_id = get_id(account)
         self.data = []
 
