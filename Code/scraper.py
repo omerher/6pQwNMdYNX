@@ -3,14 +3,8 @@ import json
 import datetime
 import re
 import PySimpleGUI as sg
-
-def get_id(username):
-    url = "https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
-    response = requests.get(url)
-    respJSON = response.json()
-
-    username_id = str(respJSON['users'][0].get("user").get("pk"))
-    return username_id
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 def get_media_type(string):
     if string == "GraphImage":
@@ -50,17 +44,32 @@ class InstagramScaper:
     def __init__(self):
         self.data = []
         self.account = ""
+        self.driver = webdriver.Chrome()
+
+    def get_json(self, url):
+        self.driver.get(url)
+        el = self.driver.find_element_by_tag_name('body')
+        print(el.text)
+
+        return el.text
+
+    def get_id(self, username):
+        url = "https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
+        response = self.get_json(url)
+        respJSON = json.loads(response)
+
+        username_id = str(respJSON['users'][0].get("user").get("pk"))
+        return username_id
 
     def get_user_info(self, id, max_id):
         scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=003056d32c2554def87228bc3fd9668a&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
-        print(scrape_url)
-        r = requests.get(scrape_url)
+        r = self.get_json(scrape_url)
 
-        return r.json()
+        return json.loads(r)
 
-    def get_user_posts(self, account_id, num_posts):
-        self.account = self.get_user_info(account_id, "")["data"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_tagged_user"]["edges"][0]["node"]["user"]["username"]
-        account_id = get_id(account)
+    def get_user_posts(self, account, num_posts):
+        self.account = account
+        account_id = self.get_id(account)
         self.data = []
 
         max_id = ""

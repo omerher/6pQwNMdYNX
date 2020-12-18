@@ -47,7 +47,7 @@ layout = [
             [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
             [sg.Text("Run Bot", font=("Ariel 14 bold"))],
             [sg.Text("Scrape and upload", font="Ariel 11 bold")],
-            [sg.Text('Enter the id of the account you want to scrape:'), sg.Button("Convert"), sg.InputText(key='-SCRAPE_USERNAME-', size=(31,0))],
+            [sg.Text('Enter the username of the account you want to scrape:'), sg.InputText(key='-SCRAPE_USERNAME-', size=(41,0))],
             [sg.Text("Enter the timestamp of your last post (if nothing is entered, it will be taken from the 'last_timestamp.txt' file):")],
             [sg.InputText(key = '-TIMESTAMP-', size=(11,0)), sg.Button('epochconverter.com')],
             [sg.Text("Enter how many posts you want to posts from the user:"), sg.InputText(key='-NUM_POSTS-', default_text='25', size=(6,0))],
@@ -109,9 +109,6 @@ while True:
 
             main(scrape_username, input_timestamp, num_posts, account)
     
-    if event == "Convert":
-        os.startfile("https://www.thekeygram.com/find-instagram-user-id/")
-
     if event == "Setup":
         username = setup()
     
