@@ -44,7 +44,7 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     time.sleep(0.25)
     click(instagram_feed_btn)
 
-    time.sleep(0.75)
+    time.sleep(1.5)
     if multiple_accounts:
         click(search_profile)
 

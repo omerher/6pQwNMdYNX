@@ -49,16 +49,16 @@ class InstagramScaper:
     def get_json(self, url):
         self.driver.get(url)
         el = self.driver.find_element_by_tag_name('body')
-        print(el.text)
 
         return el.text
 
     def get_id(self, username):
-        url = "https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
+        url = f"https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
         response = self.get_json(url)
         respJSON = json.loads(response)
 
         username_id = str(respJSON['users'][0].get("user").get("pk"))
+        print(username_id)
         return username_id
 
     def get_user_info(self, id, max_id):
