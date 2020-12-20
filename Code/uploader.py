@@ -63,6 +63,8 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     keyboard.press_and_release('ctrl+v')
 
     time.sleep(0.3)
+    click(location_pos)
+    time.sleep(0.2)
     keyboard.write(location)
     
     # click Add Content
