@@ -68,7 +68,7 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     keyboard.write(location)
     
     # click Add Content
-    time.sleep(0.3)
+    time.sleep(0.5)
     click(add_content)
 
     # click From File Upload
