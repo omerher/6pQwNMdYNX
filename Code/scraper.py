@@ -44,7 +44,7 @@ class InstagramScaper:
     def __init__(self):
         self.data = []
         self.account = ""
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Firefox()
 
     def get_json(self, url):
         self.driver.get(url)
