@@ -63,6 +63,7 @@ class InstagramScaper:
 
     def get_user_info(self, id, max_id):
         scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=003056d32c2554def87228bc3fd9668a&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
+        time.sleep(0.1)
         r = self.get_json(scrape_url)
 
         return json.loads(r)
@@ -128,6 +129,7 @@ class InstagramScaper:
 def scrape(acc, num_posts):
     scraper = InstagramScaper()
     scraper.get_user_posts(acc, num_posts)
+    scaper.driver.close()
     return scraper.data
 
 if __name__ == "__main__":
