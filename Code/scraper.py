@@ -2,6 +2,7 @@ import requests
 import json
 import datetime
 import re
+import time
 import PySimpleGUI as sg
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
