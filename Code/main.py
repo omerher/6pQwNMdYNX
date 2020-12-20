@@ -46,6 +46,9 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     multiple_accounts = config['settings']['multiple_accounts']
     format_24h = config['settings']['24h_format']
     fb_name = config['settings']['fb_name']
+
+    with open("locations.txt", "r") as f:
+        locations = f.read().split("\n")
     
 
     input_timestamp_path = os.path.join(user_account, "last_timestamp.txt")
@@ -125,7 +128,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         
         # create a caption using a method which gets: the original caption, the username of the account posting, and the origin poster
         post_caption = caption.get_caption(post["caption"], user_account, post["op"], caption_format)  # pass in values short description, your username, and credit respectively, and returns a generated caption
-        uploader.uploader(post_caption, file_names, bb_enabled, parent_path, user_account, multiple_accounts, fb_name)
+        uploader.uploader(post_caption, file_names, bb_enabled, parent_path, user_account, multiple_accounts, fb_name, random.choice(locations))
 
     time.sleep(0.5)
     for i in range(num_posts - 1):

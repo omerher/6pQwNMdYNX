@@ -10,7 +10,7 @@ def click(cords):
     y = cords[1]
     pyautogui.click(x, y)
 
-def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts, fb_name):
+def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts, fb_name, location):
     # bb = bookmarks bar
     if bb_enabled == "True":
         bb_difference = 0
@@ -26,6 +26,7 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     create_post_btn = (111, 182-bb_difference)
     instagram_feed_btn = (121, 227-bb_difference)
     caption_location = (1200, 334-bb_difference)
+    location_pos = (1300, 500-bb_difference)
     add_content = (1256, 740-bb_difference)
     file_upload = (1270, 786-bb_difference)
     address_bar = (748, 47)
@@ -60,6 +61,9 @@ def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts,
     time.sleep(0.3)
     subprocess.run(['clip.exe'], input=caption.encode('utf-16'), check=True) 
     keyboard.press_and_release('ctrl+v')
+
+    time.sleep(0.3)
+    keyboard.write(location)
     
     # click Add Content
     time.sleep(0.3)
