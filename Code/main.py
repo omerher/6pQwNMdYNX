@@ -47,10 +47,9 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     format_24h = config['settings']['24h_format']
     fb_name = config['settings']['fb_name']
 
-    with open("locations.txt", "r") as f:
+    with open("locations.txt", "r", encoding="utf-8") as f:
         locations = f.read().split("\n")
     
-
     input_timestamp_path = os.path.join(user_account, "last_timestamp.txt")
     # read and get variables from files
     if not input_timestamp and os.path.exists(input_timestamp_path):
