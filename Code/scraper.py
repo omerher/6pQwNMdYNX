@@ -59,7 +59,6 @@ class InstagramScaper:
         respJSON = json.loads(response)
 
         username_id = str(respJSON['users'][0].get("user").get("pk"))
-        print(username_id)
         return username_id
 
     def get_user_info(self, id, max_id):
