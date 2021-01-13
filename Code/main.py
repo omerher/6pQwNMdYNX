@@ -134,8 +134,15 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         keyboard.press_and_release("ctrl+shift+tab")
         time.sleep(0.01)
 
+    starting_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    starting = len(list(starting_creator_studios))
+
+    sg.popup_ok("Press ok after deleting the unnecessary tabs")
+
+    end_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    end = len(list(end_creator_studios))
     
-    to_remove = sg.popup_get_text("Navigate to the first tab and enter how many tabs you deleted (if none, enter 0):")
+    to_remove = sg.popup_get_text("Navigate to the first tab and enter how many tabs you deleted (if none, enter 0):", default_text=str(starting - end))
     while not to_remove.isnumeric() or not (0 <= int(to_remove) <= num_posts):
         if to_remove is None:
             quit()
