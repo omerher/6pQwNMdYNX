@@ -131,9 +131,10 @@ dmypy.json
 # Personal files to exclude
 Code/*
 !Code/*.py
+Code/test.py
 !Code/requirements.txt
 !Code/locations.txt
 !Code/geckodriver.exe
-gechodriver.log
+geckodriver.log
 install.bat
 .RUN.bat
