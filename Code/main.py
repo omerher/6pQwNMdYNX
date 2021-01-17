@@ -50,7 +50,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     with open("locations.txt", "r", encoding="utf-8") as f:
         locations = f.read().split("\n")
     
-    input_timestamp_path = os.path.join(f"accounts/{user_account}}, "last_timestamp.txt")
+    input_timestamp_path = os.path.join(f"accounts/{user_account}", "last_timestamp.txt")
     # read and get variables from files
     if not input_timestamp and os.path.exists(input_timestamp_path):
         with open(input_timestamp_path, "r") as f:
@@ -101,7 +101,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         with open(os.path.join(f"accounts/{user_account}/pickle_data",  f"{scrape_account}.pkl"), "wb") as f:
             pickle.dump(_data, f)
 
-    with open(os.path.join(f"accounts/{user_account}, "scraped_accounts.txt"), "a+") as f:
+    with open(os.path.join(f"accounts/{user_account}", "scraped_accounts.txt"), "a+") as f:
         f.seek(0)
         scraped_accounts = f.read().split("\n")
 
@@ -194,7 +194,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
 
     to_delete = sg.popup_yes_no(f"Do you want to delete the .pkl file of @{scrape_account}?")
     if to_delete == "Yes":
-        os.remove(os.path.join(f"accounts/{user_account}, f"pickle_data/{scrape_account}.pkl"))
+        os.remove(os.path.join(f"accounts/{user_account}", f"pickle_data/{scrape_account}.pkl"))
 
 if __name__ == '__main__':
     pass
