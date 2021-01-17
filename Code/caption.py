@@ -38,7 +38,7 @@ class Caption:
         return "unknown (DM for credit)"
 
     def get_hashtags(self):
-        path = os.path.join(self.username, "hashtags.json")
+        path = os.path.join("accounts/" + self.username, "hashtags.json")
         tiers = ["bottom", "middle", "top"]
         
         with open(path, "r") as f:
