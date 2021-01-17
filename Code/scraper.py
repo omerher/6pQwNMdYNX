@@ -48,6 +48,16 @@ class InstagramScaper:
         self.driver = webdriver.Firefox()
 
     def get_json(self, url):
+        counter = 0
+        while (counter < 3):
+            try:
+                self.driver.get(url)
+                el = self.driver.find_element_by_tag_name('body')
+
+                return el.text
+            except:
+                counter += 1
+        
         self.driver.get(url)
         el = self.driver.find_element_by_tag_name('body')
 
