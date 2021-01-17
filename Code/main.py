@@ -38,7 +38,7 @@ def reduce_posts(posts, num_posts):
 def main(scrape_account, input_timestamp, num_posts, user_account):
     # initializes config file
     config = ConfigParser()
-    config.read(os.path.join(f"accounts/{user_account}}, "settings.ini"))
+    config.read(os.path.join(f"accounts/{user_account}", "settings.ini"))
 
     post_hours = [int(x) for x in config['settings']['post_hours'].split(',')]  # converts string format into list with integers
     bb_enabled = config['settings']['bookmarks_bar_enabled']
