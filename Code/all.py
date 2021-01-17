@@ -83,7 +83,7 @@ while True:
             scrape_username = sg.popup_get_text("Username cannot be blank.")
 
         # checks if the account has already been scraped
-        with open(os.path.join(account, "scraped_accounts.txt"), "a+") as f:
+        with open(os.path.join(f"accounts/{account}", "scraped_accounts.txt"), "a+") as f:
             f.seek(0)
             scraped_accounts = f.read().split("\n")
 
