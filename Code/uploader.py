@@ -11,19 +11,19 @@ from datetime import datetime
 #     y = cords[1]
 #     pyautogui.click(x, y)
 
-def click(path):
+def click(path, confidence=0.9, grayscale=False):
     counter = 0
     while counter < 3:
         try:
-            button = pyautogui.locateOnScreen(path, confidence=0.9)
+            button = pyautogui.locateOnScreen(path, confidence=confidence, grayscale=grayscale)
             pyautogui.click(pyautogui.center(button))
             return
         except:
-            time.sleep(1)
+            time.sleep(5)
             pass
         counter += 1
     
-    button = pyautogui.locateOnScreen(path, confidence=0.9)
+    button = pyautogui.locateOnScreen(path, confidence=confidence, grayscale=grayscale)
     pyautogui.click(pyautogui.center(button))
     
     
@@ -166,7 +166,7 @@ def uploader(caption, file_names, path, multiple_accounts, fb_name, location):
 
     # click the file explorer address bar and enter path to media
     time.sleep(1)
-    click("imgs/address_bar.png")
+    click("imgs/address_bar.png", grayscale=True)
     time.sleep(0.3)
     keyboard.write(path)
     time.sleep(0.3)
