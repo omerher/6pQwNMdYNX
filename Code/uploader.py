@@ -25,94 +25,7 @@ def click(path, confidence=0.9, grayscale=False):
     
     button = pyautogui.locateOnScreen(path, confidence=confidence, grayscale=grayscale)
     pyautogui.click(pyautogui.center(button))
-    
-    
 
-# def uploader(caption, file_names, bb_enabled, path, username, multiple_accounts, fb_name, location):
-#     # bb = bookmarks bar
-#     if bb_enabled == "True":
-#         bb_difference = 0
-#     else:
-#         bb_difference = 35
-    
-#     # coords for all buttons to be pressed
-#     profile_select = (334, 172-bb_difference)
-#     search_profile = (1588, 244-bb_difference)
-#     unselect_all = (495, 730-bb_difference)
-#     first_profile = (1630, 309-bb_difference)
-#     view_btn = (811, 730-bb_difference)
-#     create_post_btn = (111, 182-bb_difference)
-#     instagram_feed_btn = (121, 227-bb_difference)
-#     caption_location = (1200, 334-bb_difference)
-#     location_pos = (1300, 500-bb_difference)
-#     add_content = (1256, 740-bb_difference)
-#     file_upload = (1270, 786-bb_difference)
-#     address_bar = (748, 47)
-#     file_names_cords = (900, 977)
-    
-    
-#     # open new tab
-#     url = "https://business.facebook.com/creatorstudio?tab=instagram_content_posts&mode=instagram&collection_id=all_pages&content_table=INSTAGRAM_POSTS"
-#     os.startfile(url)
-    
-#     # click Create Post
-#     time.sleep(4)
-#     click(create_post_btn)
-
-#     # click Instagram Feed
-#     time.sleep(0.25)
-#     click(instagram_feed_btn)
-
-#     time.sleep(1.5)
-#     if multiple_accounts:
-#         click(search_profile)
-
-#         time.sleep(0.6)
-#         keyboard.write(fb_name)
-
-#         time.sleep(0.75)
-#         click(first_profile)
-
-#     # enter caption
-#     time.sleep(0.25)
-#     click(caption_location)
-#     time.sleep(0.3)
-#     subprocess.run(['clip.exe'], input=caption.encode('utf-16'), check=True) 
-#     keyboard.press_and_release('ctrl+v')
-
-#     time.sleep(0.3)
-#     click(location_pos)
-#     time.sleep(0.2)
-#     keyboard.write(location)
-#     time.sleep(1)
-#     keyboard.press_and_release("enter")
-    
-#     # click Add Content
-#     time.sleep(0.5)
-#     click(add_content)
-
-#     # click From File Upload
-#     time.sleep(0.3)
-#     click(file_upload)
-
-#     # click the file explorer address bar and enter path to media
-#     time.sleep(1)
-#     click(address_bar)
-#     time.sleep(0.3)
-#     keyboard.write(path)
-#     time.sleep(0.3)
-#     keyboard.press_and_release("enter")
-
-#     # select all photos and press enter
-#     time.sleep(0.3)
-#     click(file_names_cords)
-#     time.sleep(0.3)
-#     keyboard.write(file_names)
-#     time.sleep(0.3)
-#     keyboard.press_and_release("enter")
-
-#     # wait a second before repeating
-#     time.sleep(1)
 
 def uploader(caption, file_names, path, multiple_accounts, fb_name, location):
     # open new tab
@@ -163,30 +76,6 @@ def uploader(caption, file_names, path, multiple_accounts, fb_name, location):
     # click From File Upload
     time.sleep(0.3)
     click("imgs/file_upload.png")
-
-    # # click the file explorer address bar and enter path to media
-    # time.sleep(1)
-    # click("imgs/address_bar.png", grayscale=True)
-    # time.sleep(0.3)
-    # keyboard.write(path)
-    # time.sleep(0.3)
-    # keyboard.press_and_release("enter")
-
-    # # select all photos and press enter
-    # time.sleep(0.5)
-    # keyboard.press_and_release("tab")
-    # time.sleep(0.5)
-    # keyboard.press_and_release("tab")
-    # time.sleep(0.5)
-    # keyboard.press_and_release("tab")
-    # time.sleep(0.5)
-    # keyboard.press_and_release("tab")
-    # time.sleep(0.5)
-    # keyboard.press_and_release("tab")
-    # time.sleep(0.5)
-    # keyboard.write(file_names)
-    # time.sleep(0.5)
-    # keyboard.press_and_release("enter")
 
     time.sleep(1)
     keyboard.write(f"{path}\\{file_names}")

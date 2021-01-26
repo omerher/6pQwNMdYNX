@@ -107,12 +107,7 @@ while True:
                 num_posts = sg.popup_get_text("Input must be a number between 1-100.")
             num_posts = int(num_posts)
 
-            try:
-                main(scrape_username, input_timestamp, num_posts, account)
-            except:
-                try_again = sg.popup_yes_no("Error", "Something went wrong. Do you want to try uploading again?")
-                if try_again == "Yes":
-                    main(scrape_username, input_timestamp, num_posts, account)
+            main(scrape_username, input_timestamp, num_posts, account)
     
     if event == "Setup":
         username = setup()
