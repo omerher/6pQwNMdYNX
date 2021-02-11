@@ -9,6 +9,7 @@ import time
 import keyboard
 from datetime import datetime
 import time
+import pyautogui
 
 import utils, scraper, caption, uploader
 
@@ -182,7 +183,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         else:
             timestamp += (post_hours[current] - post_hours[current-1])*3600
         
-        uploader.scheduler(timestamp, bb_enabled, dt_format, format_24h)
+        uploader.scheduler(timestamp, dt_format, format_24h)
 
         time.sleep(1)
         keyboard.press_and_release("ctrl+tab")
