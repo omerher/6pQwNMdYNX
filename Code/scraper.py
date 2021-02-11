@@ -48,26 +48,33 @@ class InstagramScaper:
         self.driver = webdriver.Firefox()
 
     def get_json(self, url):
+        counter = 0
+        while (counter < 3):
+            try:
+                self.driver.get(url)
+                el = self.driver.find_element_by_tag_name('body')
+
+                return json.loads(el.text)
+            except:
+                counter += 1
+                time.sleep(2)
+        
         self.driver.get(url)
         el = self.driver.find_element_by_tag_name('body')
 
-        return el.text
+        return json.loads(el.text)
 
     def get_id(self, username):
         url = f"https://www.instagram.com/web/search/topsearch/?context=user&count=0&query={username}"
-        response = self.get_json(url)
-        respJSON = json.loads(response)
+        respJSON = self.get_json(url)
 
         username_id = str(respJSON['users'][0].get("user").get("pk"))
-        print(username_id)
         return username_id
 
     def get_user_info(self, id, max_id):
         scrape_url = 'https://www.instagram.com/graphql/query/?query_hash=003056d32c2554def87228bc3fd9668a&variables={"id":' + id + ',"first":12,"after":"' + max_id + '"}'
-        time.sleep(0.1)
-        r = self.get_json(scrape_url)
 
-        return json.loads(r)
+        return self.get_json(scrape_url)
 
     def get_user_posts(self, account, num_posts):
         self.account = account
@@ -113,7 +120,9 @@ class InstagramScaper:
             if not info["data"]["user"]["edge_owner_to_timeline_media"]["page_info"]["has_next_page"]:  # check if more posts are available
                 break
             
-            max_id = info["data"]["user"]["edge_owner_to_timeline_media"]["page_info"]["end_cursor"]  # get max id for next batch            
+            max_id = info["data"]["user"]["edge_owner_to_timeline_media"]["page_info"]["end_cursor"]  # get max id for next batch
+
+            time.sleep(1)
         
         self.data = self.data[:num_posts]  # removes last posts to match number of posts requested
         self.sort_posts()

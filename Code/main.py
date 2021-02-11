@@ -9,6 +9,7 @@ import time
 import keyboard
 from datetime import datetime
 import time
+import pyautogui
 
 import utils, scraper, caption, uploader
 
@@ -38,7 +39,7 @@ def reduce_posts(posts, num_posts):
 def main(scrape_account, input_timestamp, num_posts, user_account):
     # initializes config file
     config = ConfigParser()
-    config.read(os.path.join(user_account, "settings.ini"))
+    config.read(os.path.join(f"accounts/{user_account}", "settings.ini"))
 
     post_hours = [int(x) for x in config['settings']['post_hours'].split(',')]  # converts string format into list with integers
     bb_enabled = config['settings']['bookmarks_bar_enabled']
@@ -50,7 +51,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     with open("locations.txt", "r", encoding="utf-8") as f:
         locations = f.read().split("\n")
     
-    input_timestamp_path = os.path.join(user_account, "last_timestamp.txt")
+    input_timestamp_path = os.path.join(f"accounts/{user_account}", "last_timestamp.txt")
     # read and get variables from files
     if not input_timestamp and os.path.exists(input_timestamp_path):
         with open(input_timestamp_path, "r") as f:
@@ -69,21 +70,21 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     utils.setup_folder(user_account)  # make sure all folders are there
 
     # removes all files in media_backup folder
-    for file in os.listdir(f"{user_account}/media_backup"):
-        os.remove(os.path.join(f"{user_account}/media_backup", file))
+    for file in os.listdir(f"accounts/{user_account}/media_backup"):
+        os.remove(os.path.join(f"accounts/{user_account}/media_backup", file))
 
     # moves all files from media folder to media_backup
-    for file in os.listdir(f"{user_account}/media"):
+    for file in os.listdir(f"accounts/{user_account}/media"):
         if file == ".gitkeep":
             continue
-        os.rename(os.path.join(f"{user_account}/media", file),
-        os.path.join(f"{user_account}/media_backup", file))
+        os.rename(os.path.join(f"accounts/{user_account}/media", file),
+        os.path.join(f"accounts/{user_account}/media_backup", file))
 
     time.sleep(1)
 
     # asks user if they want to load data from file
     load_from_file = "No"
-    if os.path.exists(os.path.join(f"{user_account}/pickle_data", f"{scrape_account}.pkl")):  # checks if file exists to ensure no errors or unnecessary questions are asked
+    if os.path.exists(os.path.join(f"accounts/{user_account}/pickle_data", f"{scrape_account}.pkl")):  # checks if file exists to ensure no errors or unnecessary questions are asked
         load_from_file = sg.popup_yes_no("Load from file", "We have found data from that user, do you want to load from that file")
         while not load_from_file:
             if load_from_file is None:
@@ -91,17 +92,17 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
             load_from_file = sg.popup_yes_no("Error", "Please press Yes or No. We have found data from that user, do you want to load from that file")
 
     if load_from_file == "Yes":
-        with open(os.path.join(f"{user_account}/pickle_data",  f"{scrape_account}.pkl"), "rb") as f:
+        with open(os.path.join(f"accounts/{user_account}/pickle_data",  f"{scrape_account}.pkl"), "rb") as f:
             _data = pickle.load(f)
 
         time.sleep(5)
     else:
         _data = scraper.scrape(scrape_account, 500)
         
-        with open(os.path.join(f"{user_account}/pickle_data",  f"{scrape_account}.pkl"), "wb") as f:
+        with open(os.path.join(f"accounts/{user_account}/pickle_data",  f"{scrape_account}.pkl"), "wb") as f:
             pickle.dump(_data, f)
 
-    with open(os.path.join(user_account, "scraped_accounts.txt"), "a+") as f:
+    with open(os.path.join(f"accounts/{user_account}", "scraped_accounts.txt"), "a+") as f:
         f.seek(0)
         scraped_accounts = f.read().split("\n")
 
@@ -110,10 +111,10 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
 
     data = reduce_posts(_data, num_posts)
 
-    with open(f"{user_account}/caption.txt", "r", encoding="utf-8") as f:
+    with open(f"accounts/{user_account}/caption.txt", "r", encoding="utf-8") as f:
         caption_format = f.read()
 
-    parent_path = os.path.abspath(f"{user_account}/media")
+    parent_path = os.path.abspath(f"accounts/{user_account}/media")
     for x, post in enumerate(data):
         medias = reversed(post["media"])
         file_names = ''
@@ -127,15 +128,22 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         
         # create a caption using a method which gets: the original caption, the username of the account posting, and the origin poster
         post_caption = caption.get_caption(post["caption"], user_account, post["op"], caption_format)  # pass in values short description, your username, and credit respectively, and returns a generated caption
-        uploader.uploader(post_caption, file_names, bb_enabled, parent_path, user_account, multiple_accounts, fb_name, random.choice(locations))
+        uploader.uploader(post_caption, file_names, parent_path, multiple_accounts, fb_name, random.choice(locations))
 
     time.sleep(0.5)
     for i in range(num_posts - 1):
         keyboard.press_and_release("ctrl+shift+tab")
         time.sleep(0.01)
 
+    starting_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    starting = len(list(starting_creator_studios))
+
+    sg.popup_ok("Press ok after deleting the unnecessary tabs")
+
+    end_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    end = len(list(end_creator_studios))
     
-    to_remove = sg.popup_get_text("Navigate to the first tab and enter how many tabs you deleted (if none, enter 0):")
+    to_remove = sg.popup_get_text("Navigate to the first tab and enter how many tabs you deleted (if none, enter 0):", default_text=str(starting - end))
     while not to_remove.isnumeric() or not (0 <= int(to_remove) <= num_posts):
         if to_remove is None:
             quit()
@@ -175,19 +183,19 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         else:
             timestamp += (post_hours[current] - post_hours[current-1])*3600
         
-        uploader.scheduler(timestamp, bb_enabled, dt_format, format_24h)
+        uploader.scheduler(timestamp, dt_format, format_24h)
 
         time.sleep(1)
         keyboard.press_and_release("ctrl+tab")
         time.sleep(1)
 
 
-    with open(f"{user_account}/last_timestamp.txt", "w") as f:
+    with open(f"accounts/{user_account}/last_timestamp.txt", "w") as f:
         f.write(str(int(timestamp)))  # convert to int before to remove .0 at the end
 
     to_delete = sg.popup_yes_no(f"Do you want to delete the .pkl file of @{scrape_account}?")
     if to_delete == "Yes":
-        os.remove(os.path.join(user_account, f"pickle_data/{scrape_account}.pkl"))
+        os.remove(os.path.join(f"accounts/{user_account}", f"pickle_data/{scrape_account}.pkl"))
 
 if __name__ == '__main__':
     pass

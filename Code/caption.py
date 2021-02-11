@@ -13,7 +13,7 @@ class Caption:
         self.caption_format = caption_format
     
     def get_description(self):
-        with open(f"{self.username}/descriptions.txt", "r", encoding="utf-8") as f:
+        with open(f"accounts/{self.username}/descriptions.txt", "r", encoding="utf-8") as f:
             descriptions = f.read().split("\n")
         
         return random.choice(descriptions)
@@ -38,7 +38,7 @@ class Caption:
         return "unknown (DM for credit)"
 
     def get_hashtags(self):
-        path = os.path.join(self.username, "hashtags.json")
+        path = os.path.join("accounts/" + self.username, "hashtags.json")
         tiers = ["bottom", "middle", "top"]
         
         with open(path, "r") as f:
@@ -90,7 +90,7 @@ def get_caption(og_caption, username, og_poster, caption_format):
 def caption_setup(username):
     sg.theme('Dark')
 
-    if os.path.exists(os.path.join(username, "caption.txt")):
+    if os.path.exists(os.path.join("accounts/" + username, "caption.txt")):
         with open(os.path.join(username, "caption.txt"), "r", encoding="utf-8") as f:
             default_text = f.read()
     else:
@@ -116,7 +116,7 @@ __
         if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
             break
         if event == "Save":
-            with open (f"{username}/caption.txt", "w", encoding="utf-8") as f:
+            with open (f"accounts/{username}/caption.txt", "w", encoding="utf-8") as f:
                 if check_legal_caption(values["-CAPTION-"]):
                     f.write(values["-CAPTION-"])
                     sg.popup("Saved caption!")

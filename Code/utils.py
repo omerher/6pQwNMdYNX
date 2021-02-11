@@ -16,7 +16,7 @@ def create_file(path, file_text):
             f.write(file_text)
 
 def setup_folder(username):
-    main_folder_path = os.path.realpath(__file__)[:-len(os.path.basename(__file__))]
+    main_folder_path = os.path.join(os.path.realpath(__file__)[:-len(os.path.basename(__file__))], "accounts") # get the path to the Code/accounts folder
     
     # creates the necassary files
     base_path = os.path.join(main_folder_path, username)
