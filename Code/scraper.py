@@ -138,6 +138,7 @@ class InstagramScaper:
 
 def scrape(acc, num_posts):
     scraper = InstagramScaper()
+    input()
     scraper.get_user_posts(acc, num_posts)
     scraper.driver.close()
     return scraper.data
