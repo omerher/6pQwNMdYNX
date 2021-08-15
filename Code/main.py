@@ -36,6 +36,10 @@ def reduce_posts(posts, num_posts):
     return random.sample(posts[:num_posts], len(posts[:num_posts]))
 
 
+def is_video_error():
+    return pyautogui.locateOnScreen("imgs/video_error.png") is not None
+
+
 def main(scrape_account, input_timestamp, num_posts, user_account):
     # initializes config file
     config = ConfigParser()
@@ -66,21 +70,11 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
     else: 
         last_timestamp = input_timestamp
 
-
     utils.setup_folder(user_account)  # make sure all folders are there
 
-    # removes all files in media_backup folder
-    for file in os.listdir(f"accounts/{user_account}/media_backup"):
-        os.remove(os.path.join(f"accounts/{user_account}/media_backup", file))
-
-    # moves all files from media folder to media_backup
-    for file in os.listdir(f"accounts/{user_account}/media"):
-        if file == ".gitkeep":
-            continue
-        os.rename(os.path.join(f"accounts/{user_account}/media", file),
-        os.path.join(f"accounts/{user_account}/media_backup", file))
-
-    time.sleep(1)
+    media_path = f"accounts/{user_account}/media"
+    for file in os.listdir(media_path):
+        os.remove(os.path.join(media_path, file))
 
     # asks user if they want to load data from file
     load_from_file = "No"
@@ -115,6 +109,7 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         caption_format = f.read()
 
     parent_path = os.path.abspath(f"accounts/{user_account}/media")
+    dups_list = []
     for x, post in enumerate(data):
         medias = reversed(post["media"])
         file_names = ''
@@ -129,18 +124,30 @@ def main(scrape_account, input_timestamp, num_posts, user_account):
         # create a caption using a method which gets: the original caption, the username of the account posting, and the origin poster
         post_caption = caption.get_caption(post["caption"], user_account, post["op"], caption_format)  # pass in values short description, your username, and credit respectively, and returns a generated caption
         uploader.uploader(post_caption, file_names, parent_path, multiple_accounts, fb_name, random.choice(locations))
+        
+        time.sleep(1)
+        if is_video_error():
+            num_posts -= 1
+            keyboard.press_and_release("ctrl+w")
+        else:
+            im = pyautogui.screenshot(region=(947, 560, 1216, 830))
+            if (im in dups_list):
+                num_posts -= 1
+                keyboard.press_and_release("ctrl+w")
+            else:
+                dups_list.append(im)
 
     time.sleep(0.5)
     for i in range(num_posts - 1):
         keyboard.press_and_release("ctrl+shift+tab")
         time.sleep(0.01)
 
-    starting_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    starting_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png", confidence=0.9)
     starting = len(list(starting_creator_studios))
 
     sg.popup_ok("Press ok after deleting the unnecessary tabs")
 
-    end_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png")
+    end_creator_studios = pyautogui.locateAllOnScreen("imgs/creator_studio.png", confidence=0.9)
     end = len(list(end_creator_studios))
     
     to_remove = sg.popup_get_text("Navigate to the first tab and enter how many tabs you deleted (if none, enter 0):", default_text=str(starting - end))
