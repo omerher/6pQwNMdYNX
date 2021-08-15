@@ -139,4 +139,4 @@ Code/test.py
 geckodriver.log
 install.bat
 .RUN.bat
-creds.yml
+!Code/creds.yml.example
