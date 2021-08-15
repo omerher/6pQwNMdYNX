@@ -48,17 +48,18 @@ def uploader(caption, file_names, path, multiple_accounts, fb_name, location):
     url = "https://business.facebook.com/creatorstudio?tab=instagram_content_posts&mode=instagram&collection_id=all_pages&content_table=INSTAGRAM_POSTS"
     os.startfile(url)
     
-    # click Create Post
+    # click Create Post and Instagram Feed
     time.sleep(4)
     try:
         click("imgs/create_post_new.png", grayscale=True)
+
+        time.sleep(0.25)
+        click("imgs/instagram_feed.png")
     except:
         tab(7)
         keyboard.press_and_release("enter")
-
-    # click Instagram Feed
-    time.sleep(0.25)
-    click("imgs/instagram_feed.png")
+        time.sleep(0.5)
+        keyboard.press_and_release("enter")
 
     time.sleep(1.5)
     if multiple_accounts:
