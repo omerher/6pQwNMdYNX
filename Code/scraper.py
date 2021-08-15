@@ -6,6 +6,7 @@ import time
 import PySimpleGUI as sg
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import yaml
 
 def get_media_type(string):
     if string == "GraphImage":
@@ -134,10 +135,23 @@ class InstagramScaper:
         sub_li = self.data
         sub_li.sort(key=lambda x: int(x["likes"]), reverse=True)
         self.data = sub_li
+    
+    def handle_login(self):
+        self.driver.get("https://www.instagram.com/")
+        with open("creds.yml", "r") as f:
+            y = yaml.load(f, Loader=yaml.FullLoader)
+
+        time.sleep(2)
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[1]/div/label/input").send_keys(y["username"])
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[2]/div/label/input").send_keys(y["password"])
+        time.sleep(0.2)
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[3]/button").click()
+        time.sleep(5)
 
 
 def scrape(acc, num_posts):
     scraper = InstagramScaper()
+    scraper.handle_login()
     scraper.get_user_posts(acc, num_posts)
     scraper.driver.close()
     return scraper.data

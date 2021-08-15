@@ -79,7 +79,7 @@ def setup():
             with open("accounts.txt", "a") as f:
                 f.write(f"{username}\n")
 
-            with open(f'{username}/settings.ini', 'w') as f:
+            with open(f'accounts/{username}/settings.ini', 'w') as f:
                 config.write(f)
             
             sg.Popup(f'Saved settings to "{username}/settings.ini"!', title=WINDOW_TITLE)
