@@ -51,7 +51,7 @@ layout = [
             [sg.Text("Enter the timestamp of your last post (if nothing is entered, it will be taken from the 'last_timestamp.txt' file):")],
             [sg.InputText(key = '-TIMESTAMP-', size=(11,0)), sg.Button('epochconverter.com')],
             [sg.Text("Enter how many posts you want to posts from the user:"), sg.InputText(key='-NUM_POSTS-', default_text='25', size=(6,0))],
-            [sg.Text("Select your account:", visible=accounts_visible), sg.DropDown(accounts, key='-ACCOUNT-', default_value=default_account, visible=accounts_visible), sg.Button('Start', bind_return_key=True)],
+            [sg.Text("Select your account:", visible=accounts_visible), sg.DropDown(accounts, key='-ACCOUNT-', default_value=default_account, visible=accounts_visible), sg.Button('Start', bind_return_key=True)],= 
             [sg.Text("-------------------------------------------------------------------------------------------------------------------------------------------------------")],
             [sg.Text("Scrape without uploading", font="Ariel 11 bold")],
             [sg.Text("Scrape multiple accounts to use for later:")],

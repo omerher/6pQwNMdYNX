@@ -50,7 +50,11 @@ def uploader(caption, file_names, path, multiple_accounts, fb_name, location):
     
     # click Create Post
     time.sleep(4)
-    click("imgs/create_post_new.png", grayscale=True)
+    try:
+        click("imgs/create_post_new.png", grayscale=True)
+    except:
+        tab(7)
+        keyboard.press_and_release("enter")
 
     # click Instagram Feed
     time.sleep(0.25)
