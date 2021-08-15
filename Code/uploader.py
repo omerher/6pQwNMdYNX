@@ -11,7 +11,7 @@ from datetime import datetime
 #     y = cords[1]
 #     pyautogui.click(x, y)
 
-def click(path, confidence=0.9, grayscale=False):
+def click(path, confidence=0.4, grayscale=False):
     counter = 0
     while counter < 3:
         try:
